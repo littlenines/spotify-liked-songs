@@ -13,7 +13,12 @@
 
           <v-list dense nav dark>
             <v-list-item-group v-model="selectedItem">
-              <v-list-item v-for="item in items" :key="item.title" link class="hov">
+              <v-list-item
+                v-for="item in items"
+                :key="item.title"
+                link
+                class="hov"
+              >
                 <v-list-item-icon>
                   <v-icon color="rgb(179, 179, 179)">{{ item.icon }}</v-icon>
                 </v-list-item-icon>
@@ -46,7 +51,8 @@
           </v-list>
         </v-navigation-drawer>
       </v-card>
-      <v-main id="scroll-target">
+      <v-main>
+        <div class="target" id="scroll-target">
         <v-app-bar flat v-scroll:#scroll-target="onScroll" :color="color">
           <v-btn class="mx-2" fab dark x-small>
             <v-icon dark> mdi-chevron-left </v-icon>
@@ -56,8 +62,9 @@
           </v-btn>
           <v-toolbar-title class="white--text text-h5 font-weight-black">
             <v-avatar color="green" class="ml-1 mr-3" size="44">
-            <v-icon  dark> mdi-play </v-icon>
-          </v-avatar>Liked Songs</v-toolbar-title>
+              <v-icon dark> mdi-play </v-icon> </v-avatar
+            >Liked Songs</v-toolbar-title
+          >
 
           <v-spacer></v-spacer>
 
@@ -84,14 +91,15 @@
                   >PLAYLIST</v-list-item-title
                 >
 
-                <v-list-item-subtitle class="white--text text-h1 font-weight-black"
+                <v-list-item-subtitle
+                  class="white--text text-h1 font-weight-black"
                   >Liked Songs</v-list-item-subtitle
                 >
 
                 <v-list-item-subtitle class="text-subtitle-2 grey--text"
                   ><v-avatar size="25" class="mr-1">
                     <v-img src="blank.png"></v-img> </v-avatar
-                  ><span class="white--text">Littlezz</span> • 204
+                  ><span class="white--text">Littlezz</span> • 10
                   Songs</v-list-item-subtitle
                 >
               </v-list-item-content>
@@ -103,7 +111,7 @@
           <v-avatar color="green" class="ml-5" size="60">
             <v-icon large dark> mdi-play </v-icon>
           </v-avatar>
-          <v-icon  class="ml-5 icon-hov" large
+          <v-icon class="ml-5 icon-hov" large
             >mdi-arrow-down-thin-circle-outline</v-icon
           >
           <v-spacer></v-spacer>
@@ -114,17 +122,17 @@
             Custom order <v-icon color="white">mdi-menu-down</v-icon>
           </p>
         </v-row>
-
+      <v-container grid-list-xs>
         <ul class="nav-table white--text">
           <v-simple-table dark>
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th class="text-left">#</th>
+                  <th class="text-left" width="80px">#</th>
                   <th class="text-left">Title</th>
-                  <th class="text-center">Album</th>
-                  <th class="text-center">Date Added</th>
-                  <th class="text-center">
+                  <th class="text-center" colspan="2">Album</th>
+                  <th class="text-center" width="120px">Date Added</th>
+                  <th class="text-center" width="70px">
                     <v-icon small>mdi-clock</v-icon>
                   </th>
                 </tr>
@@ -132,21 +140,40 @@
             </template>
           </v-simple-table>
         </ul>
-        <v-container>
+      
+       
           <v-simple-table dark>
             <template v-slot:default>
               <tbody>
-                <tr v-for="item in songs" :key="item.name">
-                  <td>{{ item.ID }}</td>
+                <tr v-for="item in songs" :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <td>
+                    
+                      <v-list-item>
+                        <v-avatar tile class="mr-2" size="40">
+                          <img :src="item.thumb" alt="picture" />
+                        </v-avatar>
+
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-html="item.name"
+                          ></v-list-item-title>
+                          <v-list-item-subtitle
+                            v-html="item.created_by"
+                          ></v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    
+                  </td>
                   <td>{{ item.name }}</td>
-                  <td>{{ item.album }}</td>
-                  <td>{{ item.date }}</td>
-                  <td>{{ item.calories }}</td>
+                  <td>4 hours ago</td>
+                  <td>{{ item.duration }}</td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
-        </v-container>
+           </v-container>
+        </div>
       </v-main>
 
       <v-card class="mx-auto" width="270" max-width="500" dark>
@@ -218,27 +245,29 @@
 
       <div class="footer-sound mr-3">
         <v-icon color="grey">mdi-playlist-play</v-icon>
-          <v-icon color="grey" class="mx-2">mdi-desktop-tower-monitor</v-icon>
-          <v-icon color="grey">mdi-volume-high</v-icon>
-          <v-progress-linear
-            style="width: 100px"
-            background-color="grey darken-1"
-            color="grey lighten-1"
-            value="15"
-            class="mx-2"
-          ></v-progress-linear>
-          <v-icon color="grey">mdi-fullscreen</v-icon>
+        <v-icon color="grey" class="mx-2">mdi-desktop-tower-monitor</v-icon>
+        <v-icon color="grey">mdi-volume-high</v-icon>
+        <v-progress-linear
+          style="width: 100px"
+          background-color="grey darken-1"
+          color="grey lighten-1"
+          value="15"
+          class="mx-2"
+        ></v-progress-linear>
+        <v-icon color="grey">mdi-fullscreen</v-icon>
       </div>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
+       songs: null,
       selectedItem: 1,
-      color: 'transparent',
+      color: "transparent",
       items: [
         { title: "Home", icon: "mdi-home" },
         { title: "Search", icon: "mdi-magnify" },
@@ -277,98 +306,207 @@ export default {
           avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
         },
       ],
-      songs: [
-        {
-          ID: 1,
-          name: "Wonders",
-          album: "Wonders",
-          date: "1 day ago",
-          calories: "3:31",
-        },
-        {
-          ID: 2,
-          name: "Walls of Anxiety",
-          album: "Walls of Anxiety",
-          date: "11 days ago",
-          calories: "4:01",
-        },
-        {
-          ID: 3,
-          name: "Holy Wolf",
-          album: "White Dragon",
-          date: "29 days ago",
-          calories: "4:22",
-        },
-        {
-          ID: 4,
-          name: "Just Burn - VIP",
-          album: "Just Burn(VIP)",
-          date: "Nov 2, 2021",
-          calories: "3:49",
-        },
-        {
-          ID: 1,
-          name: "Wonders",
-          album: "Wonders",
-          date: "1 day ago",
-          calories: "3:31",
-        },
-        {
-          ID: 2,
-          name: "Walls of Anxiety",
-          album: "Walls of Anxiety",
-          date: "11 days ago",
-          calories: "4:01",
-        },
-        {
-          ID: 3,
-          name: "Holy Wolf",
-          album: "White Dragon",
-          date: "29 days ago",
-          calories: "4:22",
-        },
-        {
-          ID: 4,
-          name: "Just Burn - VIP",
-          album: "Just Burn(VIP)",
-          date: "Nov 2, 2021",
-          calories: "3:49",
-        },
-        {
-          ID: 1,
-          name: "Wonders",
-          album: "Wonders",
-          date: "1 day ago",
-          calories: "3:31",
-        },
-        {
-          ID: 2,
-          name: "Walls of Anxiety",
-          album: "Walls of Anxiety",
-          date: "11 days ago",
-          calories: "4:01",
-        },
-        {
-          ID: 3,
-          name: "Holy Wolf",
-          album: "White Dragon",
-          date: "29 days ago",
-          calories: "4:22",
-        },
-        {
-          ID: 4,
-          name: "Just Burn - VIP",
-          album: "Just Burn(VIP)",
-          date: "Nov 2, 2021",
-          calories: "3:49",
-        },
-      ],
+      // songs: [
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      //   {
+      //     ID: 9,
+      //     picture: "raimu.png",
+      //     name: "The Girl I Haven't Met",
+      //     artist: "Kudasaibeats",
+      //     album: "Falling",
+      //     date: "Nov 2, 2021",
+      //     calories: "3:49",
+      //   },
+      // ],
       icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
       right: null,
     };
   },
   mounted() {
     window.addEventListener("scroll", this.onScroll);
+
+    axios.get("http://orangevalleycaa.org/api/music/order/id")
+    .then(response => (this.songs = response.data))
+    .catch(error => console.log(error));
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.onScroll);
@@ -379,16 +517,16 @@ export default {
       // this.color =
       //   e.target.documentElement.scrollTop === 0 ? "red" : "white";
       if (e.target.scrollTop >= 300) {
-        this.color = 'deep-purple darken-4';
-      } else{
-        this.color = 'transparent';
-        document.querySelector(".v-toolbar__title").style.display = 'none';
+        this.color = "deep-purple darken-4";
+      } else {
+        this.color = "transparent";
+        document.querySelector(".v-toolbar__title").style.display = "none";
       }
 
       if (e.target.scrollTop >= 400) {
-        document.querySelector(".v-toolbar__title").style.display = 'inline';
-      } else{
-        document.querySelector(".v-toolbar__title").style.display = 'none';
+        document.querySelector(".v-toolbar__title").style.display = "inline";
+      } else {
+        document.querySelector(".v-toolbar__title").style.display = "none";
       }
     },
   },
@@ -396,9 +534,8 @@ export default {
 </script>
 
 <style>
-
 .v-navigation-drawer__content {
-background-color: rgb(0, 0, 0) !important;
+  background-color: rgb(0, 0, 0) !important;
 }
 
 .hov {
@@ -415,8 +552,8 @@ background-color: rgb(0, 0, 0) !important;
   width: 100%;
 }
 
-.v-toolbar__title{
-  display:none;
+.v-toolbar__title {
+  display: none;
 }
 .hover-minus-copy:hover {
   background-color: grey;
@@ -453,8 +590,7 @@ background-color: rgb(0, 0, 0) !important;
 
 .v-main {
   width: 100wh;
-  height: calc(100vh - 90px);
-  overflow: auto;
+  height: calc(100vh - 90px) !important;
   flex: auto !important;
   /* background: linear-gradient(
     0deg,
@@ -462,6 +598,11 @@ background-color: rgb(0, 0, 0) !important;
     rgba(73, 52, 142, 1) 100%
   ) !important; */
   background-color: rgb(24, 24, 24) !important;
+}
+
+.target {
+  height:calc(100vh - 90px);
+  overflow:auto;
 }
 
 .row {
@@ -515,7 +656,7 @@ background-color: rgb(0, 0, 0) !important;
   color: #fff !important;
 }
 
-.v-footer{
+.v-footer {
   background-color: rgb(24, 24, 24) !important;
   border-top: 1px solid rgb(40, 40, 40) !important;
 }
@@ -580,9 +721,9 @@ background-color: rgb(0, 0, 0) !important;
 
 .footer-sound {
   display: flex;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 </style>
